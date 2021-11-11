@@ -1,16 +1,14 @@
 #!/bin/bash 
 
-#    ▀█████████▄   ▄██████▄     ▄████████    ▄████████
-#      ███    ███ ███    ███   ███    ███   ███    ███
-#      ███    ███ ███    ███   ███    █▀    ███    █▀
-#     ▄███▄▄▄██▀  ███    ███   ███          ███
-#    ▀▀███▀▀▀██▄  ███    ███ ▀███████████ ▀███████████ ¦ Dev : @TH3BOSS
-#      ███    ██▄ ███    ███          ███          ███ ¦ Dev : @BLCON
-#      ███    ███ ███    ███    ▄█    ███    ▄█    ███
-#    ▄█████████▀   ▀██████▀   ▄████████▀   ▄████████▀  ¦ Source TH3BOSS BY @TH3BS
+#           ____          ______         @jjxxh
+#     /\   |  _ \   /\   |___  /   /\    
+#    /  \  | |_) | /  \     / /   /  \   
+#   / /\ \ |  _ < / /\ \   / /   / /\ \  
+#  / ____ \| |_) / ____ \ / /__ / ____ \ 
+# /_/    \_\____/_/    \_\_____/_/    \_\@xb_0b
+
 #---------------------------------------------------------------------
 cd $(cd $(dirname $0); pwd)
- 
 RED='\033[0;31m'
 SMAY='\033[0;36m' 
 GREEN='\033[0;32m'
@@ -20,24 +18,6 @@ WHITB='\033[01;90m'
 WHITEC='\033[01;91m'
 CNIL='\033[0m'
 Version=`lsb_release -rs | cut -f1 -d"."`
-
-if [ "$Version" == "18" ];then
-echo -e "${GREEN}
- ▀█████████▄   ▄██████▄     ▄████████    ▄████████
-   ███    ███ ███    ███   ███    ███   ███    ███
-   ███    ███ ███    ███   ███    █▀    ███    █▀
-  ▄███▄▄▄██▀  ███    ███   ███          ███
- ▀▀███▀▀▀██▄  ███    ███ ▀███████████ ▀███████████ ¦ Dev : @TH3BOSS
-   ███    ██▄ ███    ███          ███          ███ ¦ Dev : @BLCON
-   ███    ███ ███    ███    ▄█    ███    ▄█    ███ ¦ Source TH3BOSS
- ▄█████████▀   ▀██████▀   ▄████████▀   ▄████████▀  ¦ BY @TH3BS
- ---------------------------------------------------------------------${CNIL}"
-echo -e "${RED}| للاسف لايمكنك تنصيب السورس ع نظام اوبنتو {${Version}} يجب ان يكون على اصدار  اقل مثلا  ${SMAY}14 او 16
-${CNIL}";
-echo -e "${RED}| Sorry Canot install Source on Ubuntu {${Version}} Please install system To Ubuntu ${SMAY}14 or 16 ${RED} For Run The Source Th3Boss 
-${CNIL}";
-exit;
-fi
 
 
 if [ ! -f "./TG" ]; then
@@ -50,6 +30,7 @@ chmod +x ./ins
 ./ins
 exit;
 fi
+
 
 if [ ! -f "./inc/Token.txt" ]; then
 echo -e "${RED}
@@ -70,31 +51,25 @@ exit;
 fi
 fi
 
+UserBot=$(redis-cli get ${BOTID}:UserNameBot:)
+
+echo "$Sudo"
+echo "$UserBot"
 
 chmod +x ./TG  
-Loops=0
+
 if [ "$1" == "R" ]; then
-while [[ $Loops -le 5 ]]; do
+while true; do
 sleep 1s
+rm -fr ./BOSS
 sudo rm -fr ~/.telegram-cli
 ./TG -s ./inc/Run.lua --bot=$TOKEN
-let Plas=Loops+1
-redis-cli SETEX $TOKEN 3 $Plas
-Loops=`redis-cli GET ${TOKEN}`
-echo $Loops
-if [[ $Loops == 5 ]]; then
-curl "https://api.telegram.org/bot${TOKEN}/sendmessage" -F "chat_id=${Sudo}" -F "text=THESOURCE-Reloaded-${COUNTER}-times" &>/dev/null
-screen -X -S boss quit
-fi
 done
 else 
-if [[ $Loops == 0 ]]; then
-if ! screen -list | grep -q "boss"; then
-screen -S boss ./run R
+if ! screen -list | grep -q "$UserBot"; then
+screen -S "$UserBot" ./run R
 else
-screen -X -S boss quit
-screen -S boss ./run R
+screen -X -S "$UserBot" quit
+screen -S "$UserBot" ./run R
 fi
 fi
-fi
-
